@@ -2,77 +2,76 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen, Building, Services, Issues, Chat } from "./Tab";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Home from "./tabs/Home";
+import Building from "./tabs/Building";
+import Services from "./tabs/Services";
+import Issues from "./tabs/Issues";
+import Chat from "./tabs/Chat";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+interface TabInfo {
+  component: React.ComponentType<any>;
+  componentName: string;
+  componentIcon: string;
+}
+
+const tabs: TabInfo[] = [
+  { component: Home, componentName: "Home", componentIcon: "home" },
+  {
+    component: Building,
+    componentName: "Building",
+    componentIcon: "office-building-outline",
+  },
+  {
+    component: Services,
+    componentName: "Services",
+    componentIcon: "calendar-check-outline",
+  },
+  {
+    component: Issues,
+    componentName: "Issues",
+    componentIcon: "calendar-check-outline",
+  },
+  { component: Chat, componentName: "Chat", componentIcon: "chat" },
+];
+
+const TabsNavigator = () => {
+  return (
+    <Tab.Navigator>
+      {tabs.map((tab: TabInfo) => {
+        return (
+          <Tab.Screen
+            key={tab.componentName}
+            name={tab.componentName}
+            component={tab.component}
+            options={{
+              headerShown: false,
+              tabBarLabel: tab.componentName,
+              tabBarIcon: ({ color }) => (
+                <MaterialCommunityIcons
+                  name={tab.componentIcon}
+                  color={color}
+                  size={26}
+                />
+              ),
+            }}
+          />
+        );
+      })}
+    </Tab.Navigator>
+  );
+};
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Building"
-          component={Building}
-          options={{
-            tabBarLabel: "Building",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="office-building-outline"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Services"
-          component={Services}
-          options={{
-            tabBarLabel: "Services",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="calendar-check-outline"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Issues"
-          component={Issues}
-          options={{
-            tabBarLabel: "Issues",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons
-                name="book-open-variant"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Chat"
-          component={Chat}
-          options={{
-            tabBarLabel: "Chat",
-            tabBarIcon: ({ color }) => (
-              <MaterialCommunityIcons name="chat" color={color} size={26} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen name="Xomie" component={TabsNavigator} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
