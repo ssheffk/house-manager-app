@@ -9,6 +9,8 @@ import Services from "./tabs/Services";
 import Issues from "./tabs/Issues";
 import Chat from "./tabs/Chat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { TextInput, Button, StyleSheet } from "react-native";
+import SignIn from "./SignIn";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -69,8 +71,9 @@ const TabsNavigator = () => {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="SignIn">
         <Stack.Screen name="Xomie" component={TabsNavigator} />
+        <Stack.Screen name="SignIn" component={SignIn} />
       </Stack.Navigator>
     </NavigationContainer>
   );
