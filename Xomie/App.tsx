@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,7 +9,7 @@ import Services from "./tabs/Services";
 import Issues from "./tabs/Issues";
 import Chat from "./tabs/Chat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TextInput, Button, StyleSheet } from "react-native";
+import { TextInput, Button, StyleSheet, SafeAreaView } from "react-native";
 import SignIn from "./SignIn";
 
 const Tab = createBottomTabNavigator();
@@ -69,12 +69,45 @@ const TabsNavigator = () => {
 };
 
 export default function App() {
+  const [state, setState] = useState<boolean>(false);
+
+  const updateState = (newState: boolean) => {
+    setState(newState);
+  };
+  const styles = StyleSheet.create({
+    button: {
+      fontSize: 12,
+      padding: 5,
+    },
+  });
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="Xomie" component={TabsNavigator} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignIn">
+          {state ? (
+            <Stack.Screen
+              name="Xomie"
+              component={TabsNavigator}
+              options={({ navigation }) => ({
+                headerRight: () => (
+                  <Button
+                    title="Log Off"
+                    onPress={() => {
+                      updateState(false);
+                    }}
+                  />
+                ),
+              })}
+            />
+          ) : (
+            <Stack.Screen
+              name="SignIn"
+              component={SignIn}
+              initialParams={{ updateState }}
+            />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }

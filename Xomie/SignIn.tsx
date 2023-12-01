@@ -1,13 +1,21 @@
 import React from "react";
 import { StyleSheet, TextInput, Button } from "react-native";
 
-const SignIn = ({ navigation }: any) => {
+const SignIn = ({ route }: any) => {
   const [username, onChangeUsername] = React.useState("");
   const [password, onChangePassword] = React.useState("");
-  const getIsSignedIn = (loginDetails: string) => {
-    // custom logic
-    return loginDetails.length >= 5;
+
+  const { updateState } = route.params;
+
+  const handleLogin = () => {
+    // Custom logic to check login details
+    const isSignedIn = password.length + username.length > 10; // Example condition
+
+    if (isSignedIn) {
+      updateState(true); // Update the state in the App component
+    }
   };
+
   return (
     <>
       <TextInput
@@ -22,13 +30,9 @@ const SignIn = ({ navigation }: any) => {
         value={password}
         placeholder="password"
         textContentType="password"
+        secureTextEntry={true}
       />
-      <Button
-        title="Login"
-        onPress={() =>
-          getIsSignedIn(password) ? navigation.navigate("Xomie") : false
-        }
-      />
+      <Button title="Login" onPress={handleLogin} />
     </>
   );
 };
