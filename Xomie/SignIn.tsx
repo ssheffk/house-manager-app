@@ -9,7 +9,7 @@ const SignIn = ({ route }: any) => {
 
   const handleLogin = () => {
     // Custom logic to check login details
-    const isSignedIn = password.length + username.length > 10; // Example condition
+    const isSignedIn = password.length + username.length > 5; // Example condition
 
     if (isSignedIn) {
       updateState(true); // Update the state in the App component

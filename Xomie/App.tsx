@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,8 +9,9 @@ import Services from "./tabs/Services";
 import Issues from "./tabs/Issues";
 import Chat from "./tabs/Chat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TextInput, Button, StyleSheet, SafeAreaView } from "react-native";
+import { Button, PanResponder, SafeAreaView } from "react-native";
 import SignIn from "./SignIn";
+import ProfileModal from "./components/profile-modal/ProfileModal";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -70,16 +71,18 @@ const TabsNavigator = () => {
 
 export default function App() {
   const [state, setState] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const updateState = (newState: boolean) => {
     setState(newState);
   };
-  const styles = StyleSheet.create({
-    button: {
-      fontSize: 12,
-      padding: 5,
-    },
-  });
+
+  const handleSwipeInMiddle = () => {
+    // Perform action to open the modal when swipe enters the middle section
+    console.log("Swipe entered the middle - Open modal");
+    // Add logic here to open the modal
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
@@ -97,6 +100,14 @@ export default function App() {
                     }}
                   />
                 ),
+                headerLeft: () => (
+                  <Button
+                    title="Profile"
+                    onPress={() => {
+                      setModalVisible(true);
+                    }}
+                  />
+                ),
               })}
             />
           ) : (
@@ -107,7 +118,36 @@ export default function App() {
             />
           )}
         </Stack.Navigator>
+        <ProfileModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          onSwipeInMiddle={handleSwipeInMiddle}
+        />
       </NavigationContainer>
     </SafeAreaView>
   );
 }
+
+// {...panResponder.panHandlers}
+// const panResponder = useRef(
+//   PanResponder.create({
+//     onStartShouldSetPanResponder: () => true,
+//     onMoveShouldSetPanResponder: () => true,
+//     // onPanResponderMove: (_, gesture) => {
+//     //   // Check if the swipe enters the middle section of the screen
+//     //   // console.log(gesture.moveX);
+//     //   if (gesture.moveX > 220 && gesture.moveX < 250) {
+//     //     // Adjust these values based on your layout
+//     //     // setModalVisible(true);
+//     //   }
+//     // },
+//     onPanResponderTerminate: (_, gesture) => {
+//       // Reset or handle any necessary actions when the swipe is released
+//       if (gesture.moveX > 220 && gesture.moveX < 250) {
+//         // Adjust these values based on your layout
+//         setModalVisible(true);
+//         console.log(gesture);
+//       }
+//     },
+//   })
+// ).current;
