@@ -77,12 +77,6 @@ export default function App() {
     setState(newState);
   };
 
-  const handleSwipeInMiddle = () => {
-    // Perform action to open the modal when swipe enters the middle section
-    console.log("Swipe entered the middle - Open modal");
-    // Add logic here to open the modal
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
@@ -121,7 +115,6 @@ export default function App() {
         <ProfileModal
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
-          onSwipeInMiddle={handleSwipeInMiddle}
         />
       </NavigationContainer>
     </SafeAreaView>
