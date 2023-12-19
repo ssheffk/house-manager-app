@@ -1,20 +1,16 @@
-import React, { useRef, useState } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import React from "react";
 import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Home from "./tabs/Home";
-import Building from "./tabs/Building";
-import Services from "./tabs/Services";
-import Issues from "./tabs/Issues";
-import Chat from "./tabs/Chat";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Button, PanResponder, SafeAreaView } from "react-native";
-import SignIn from "./SignIn";
-import ProfileModal from "./components/profile-modal/ProfileModal";
+import { SafeAreaView } from "react-native";
+import BuildingTab from "./tabs/BuildingTab";
+import ServicesTab from "./tabs/ServicesTab";
+import HomeTab from "./tabs/HomeTab";
+import ChatTab from "./tabs/ChatTab";
+import IssuesTab from "./tabs/IssuesTab";
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
 
 interface TabInfo {
   component: React.ComponentType<any>;
@@ -23,87 +19,54 @@ interface TabInfo {
 }
 
 const tabs: TabInfo[] = [
-  { component: Home, componentName: "Home", componentIcon: "home" },
+  { component: HomeTab, componentName: "Home", componentIcon: "home" },
   {
-    component: Building,
+    component: BuildingTab,
     componentName: "Building",
     componentIcon: "office-building-outline",
   },
   {
-    component: Services,
+    component: ServicesTab,
     componentName: "Services",
     componentIcon: "calendar-check-outline",
   },
   {
-    component: Issues,
+    component: IssuesTab,
     componentName: "Issues",
     componentIcon: "calendar-check-outline",
   },
-  { component: Chat, componentName: "Chat", componentIcon: "chat" },
+  { component: ChatTab, componentName: "Chat", componentIcon: "chat" },
 ];
 
-const TabsNavigator = () => {
-  return (
-    <Tab.Navigator>
-      {tabs.map((tab: TabInfo) => {
-        return (
-          <Tab.Screen
-            key={tab.componentName}
-            name={tab.componentName}
-            component={tab.component}
-            options={{
-              headerShown: false,
-              tabBarLabel: tab.componentName,
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons
-                  name={tab.componentIcon}
-                  color={color}
-                  size={26}
-                />
-              ),
-            }}
-          />
-        );
-      })}
-    </Tab.Navigator>
-  );
-};
-
 export default function App() {
-  const [state, setState] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const updateState = (newState: boolean) => {
-    setState(newState);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn">
+        <Tab.Navigator>
+          {tabs.map((tab: TabInfo) => {
+            return (
+              <Tab.Screen
+                key={tab.componentName}
+                name={tab.componentName}
+                component={tab.component}
+                options={{
+                  headerShown: false,
+                  tabBarLabel: tab.componentName,
+                  tabBarIcon: ({ color }) => (
+                    <MaterialCommunityIcons
+                      name={tab.componentIcon}
+                      color={color}
+                      size={26}
+                    />
+                  ),
+                }}
+              />
+            );
+          })}
+        </Tab.Navigator>
+        {/* <Stack.Navigator initialRouteName="SignIn">
           {state ? (
-            <Stack.Screen
-              name="Xomie"
-              component={TabsNavigator}
-              options={({ navigation }) => ({
-                headerRight: () => (
-                  <Button
-                    title="Log Off"
-                    onPress={() => {
-                      updateState(false);
-                    }}
-                  />
-                ),
-                headerLeft: () => (
-                  <Button
-                    title="Profile"
-                    onPress={() => {
-                      setModalVisible(true);
-                    }}
-                  />
-                ),
-              })}
-            />
+            <Stack.Screen name="Xomie" component={TabsNavigator} />
           ) : (
             <Stack.Screen
               name="SignIn"
@@ -111,11 +74,7 @@ export default function App() {
               initialParams={{ updateState }}
             />
           )}
-        </Stack.Navigator>
-        <ProfileModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-        />
+        </Stack.Navigator> */}
       </NavigationContainer>
     </SafeAreaView>
   );
