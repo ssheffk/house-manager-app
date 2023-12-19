@@ -23,11 +23,11 @@ const buildingData: { floor: number; apartments: number[] }[] = [
   },
 ];
 
-const BuildingScreen = () => {
-  const navigation = useNavigation();
-  const navigateToHouseHoldOverview = (apartmentNumber: number) => {
-    navigation.navigate("HouseHoldOverview", { apartmentNumber });
-  };
+const BuildingScreen = ({ navigation }: any) => {
+  // const navigation = useNavigation();
+  // const navigateToHouseHoldOverview = (apartmentNumber: number) => {
+  //   navigation.navigate("HouseHoldOverview", { apartmentNumber });
+  // };
 
   return (
     <ScrollView>
@@ -40,7 +40,7 @@ const BuildingScreen = () => {
                   <Text
                     key={i}
                     style={styles.apartmentBubble}
-                    onPress={() => navigateToHouseHoldOverview(apt)}
+                    onPress={() => navigation.navigate("HouseHoldOverview")}
                   >
                     <MaterialCommunityIcons
                       name="door-open"
