@@ -48,7 +48,12 @@ export default function App() {
             ...screens,
             // Use some screens conditionally based on some condition
           }).map(([name, component]) => (
-            <Stack.Screen key={name} name={name} component={component} />
+            <Stack.Screen
+              key={name}
+              name={name}
+              component={component}
+              options={{ headerShown: false }}
+            />
           ))}
         </Stack.Navigator>
         <ProfileModal
