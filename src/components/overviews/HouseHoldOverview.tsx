@@ -1,6 +1,6 @@
 import { Button } from "@rneui/base";
 import { Avatar } from "@rneui/themed";
-import { FlatList, SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { Text, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -10,12 +10,6 @@ const HouseHoldOverview = ({ navigation }: any) => {
   const petInfo = "Brick, dog";
   const contactNumber = "0889991991";
   const email = "example@gmail.com";
-  const data = [
-    { id: "1", title: "Item 1" },
-    { id: "2", title: "Item 2" },
-    { id: "3", title: "Item 3" },
-    // Add more items as needed
-  ];
 
   const ApartmentProfile = () => (
     <SafeAreaView>

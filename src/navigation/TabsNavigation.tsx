@@ -6,6 +6,8 @@ import ChatScreen from "../screens/ChatScreen";
 import HomeScreen from "../screens/HomeScreen";
 import IssuesScreen from "../screens/IssuesScreen";
 import ServicesScreen from "../screens/ServicesScreen";
+import Header from "../components/Header";
+import { SafeAreaView } from "react-native";
 interface TabInfo {
   component: React.ComponentType<any>;
   componentName: string;
@@ -32,31 +34,34 @@ const tabs: TabInfo[] = [
   { component: ChatScreen, componentName: "Chat", componentIcon: "chat" },
 ];
 const Tab = createBottomTabNavigator();
-const TabsNavigator = () => {
+const TabsNavigation = () => {
   return (
-    <Tab.Navigator>
-      {tabs.map((tab: TabInfo) => {
-        return (
-          <Tab.Screen
-            key={tab.componentName}
-            name={tab.componentName}
-            component={tab.component}
-            options={{
-              headerShown: false,
-              tabBarLabel: tab.componentName,
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons
-                  name={tab.componentIcon}
-                  color={color}
-                  size={26}
-                />
-              ),
-            }}
-          />
-        );
-      })}
-    </Tab.Navigator>
+    <SafeAreaView style={{ height: "100%" }}>
+      <Header title="header" />
+      <Tab.Navigator>
+        {tabs.map((tab: TabInfo) => {
+          return (
+            <Tab.Screen
+              key={tab.componentName}
+              name={tab.componentName}
+              component={tab.component}
+              options={{
+                headerShown: false,
+                tabBarLabel: tab.componentName,
+                tabBarIcon: ({ color }) => (
+                  <MaterialCommunityIcons
+                    name={tab.componentIcon}
+                    color={color}
+                    size={26}
+                  />
+                ),
+              }}
+            />
+          );
+        })}
+      </Tab.Navigator>
+    </SafeAreaView>
   );
 };
 
-export default TabsNavigator;
+export default TabsNavigation;
