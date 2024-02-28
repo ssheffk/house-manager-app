@@ -7,7 +7,6 @@ import os
 
 config = dotenv_values('.env')
 
-print(config)
 # SQLALCHEMY  - db set up
 DB_CONFIG = {
     'drivername': config["DRIVERNAME"],
