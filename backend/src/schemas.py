@@ -4,6 +4,11 @@ from pydantic import BaseModel
 
 class UserBase(BaseModel):
     username: str
+    phone_number: int
+    email: str
+    apartment_id: int
+    owner: bool
+    renter: bool
 
 # basemodel is from pydantic and should be used for validation 
 # this is how we extend the class and add one more property
@@ -19,6 +24,7 @@ class BuildingBase(BaseModel):
     apartments: int
     floors: int
     
+#COMMENT: fix return model apartments to be included also, and check what will return if no apartments there
 class BuildingResponse(BuildingBase):
     id: int
     

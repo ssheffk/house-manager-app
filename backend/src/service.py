@@ -7,10 +7,18 @@ from db_config import query_db, write_into_db
 # ** unpacking
 # SERVICES
 def create_user(model: UserBase) -> UserResponse:    
-    user = User(model.username)
+    user = User(model.username, model.phone_number, model.email, model.apartment_id, model.owner, model.renter)
     write_into_db(user)
 
-    return UserResponse(id=user.id, username=user.username)
+    return UserResponse(
+        id=user.id,
+        username=user.username,
+        phone_number=user.phone_number,
+        email=user.email,
+        apartment_id=user.apartment_id,
+        owner=user.owner,
+        renter=user.renter
+        )
 
 def register_building(model: BuildingBase) -> dict[str, Any] | None:
     building = Building(
@@ -60,6 +68,12 @@ def register_apartment(apartment: ApartmentBase) -> dict[str, Any] | None:
         family_name=param.family_name
     )
     
+def get_apartment_by_id(id: int) -> dict[str, Any] | None:
+    query = select(Apartment).options(joinedload(Apartment.users)).filter(Apartment.id == id)
+    apartment = query_db(query).first()
+    
+    return apartment._asdict() if apartment is not None else None
+
 def get_apartments(building_id: int) -> list[ApartmentResponse]:
     query = (
         select(Apartment)
