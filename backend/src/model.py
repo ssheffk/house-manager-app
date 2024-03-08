@@ -1,8 +1,9 @@
 
-from sqlalchemy.orm import  Mapped, mapped_column, relationship
+from sqlalchemy.orm import  Mapped, mapped_column, relationship, declarative_base
 from sqlalchemy import Column, DateTime, ForeignKey, Integer
 from datetime import datetime
-from db_config import engine, Base
+from db_config import Base, engine
+
 
 class User(Base):
     __tablename__ = "users"
