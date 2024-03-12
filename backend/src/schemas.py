@@ -9,6 +9,7 @@ class UserBase(BaseModel):
     apartment_id: int
     owner: bool
     renter: bool
+    valid: bool
 
 # basemodel is from pydantic and should be used for validation 
 # this is how we extend the class and add one more property

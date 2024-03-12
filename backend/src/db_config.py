@@ -4,7 +4,7 @@ from sqlalchemy import  create_engine
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
-
+import model
 config = dotenv_values('.env')
 
 # SQLALCHEMY  - db set up
@@ -32,3 +32,5 @@ def write_into_db(model: BaseModel):
 
 def query_db(query):
     return session.execute(query)
+
+# Base.metadata.create_all(engine)

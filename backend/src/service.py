@@ -2,12 +2,13 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from schemas import ApartmentBase, ApartmentResponse, BuildingBase, BuildingResponse, UserBase, UserResponse
-from model import Apartment, Building, User
+from model import Apartment, Building
+from models.user import User
 from db_config import query_db, write_into_db
 # ** unpacking
 # SERVICES
 def create_user(model: UserBase) -> UserResponse:    
-    user = User(model.username, model.phone_number, model.email, model.apartment_id, model.owner, model.renter)
+    user = User(model.username, model.phone_number, model.email, model.apartment_id, model.owner, model.renter, model.valid)
     write_into_db(user)
 
     return UserResponse(
