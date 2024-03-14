@@ -1,5 +1,5 @@
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from db_config import Base
 
 class Apartment(Base):
@@ -10,7 +10,7 @@ class Apartment(Base):
     # pet: relation with another will stay as true/false for now
     #TODO:  pet field
     pet: Mapped[bool] = mapped_column(nullable=False)
-    apartment_number: Mapped[int] = mapped_column(unique=True)
+    apartment_number: Mapped[int] = mapped_column(nullable=False)
     floor: Mapped[int] = mapped_column(nullable=False)
     # parking_space: keep as a true/false to be change
     #TODO:  parking field
@@ -21,6 +21,7 @@ class Apartment(Base):
     
     building = relationship("Building", back_populates="apartments_data")
     users = relationship("User", back_populates="apartment")
+    
     
     def __init__(self, building_id, pet, apartment_number, floor, parking_space, family_name):
         self.building_id = building_id

@@ -1,14 +1,28 @@
 from typing import Any
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.orm import joinedload
-from schemas import ApartmentBase, ApartmentResponse, BuildingBase, BuildingResponse, UserBase, UserResponse
-from model import Apartment, Building
+
+from schemas.user import  UserBase, UserResponse
+from schemas.building import BuildingBase, BuildingResponse
+from schemas.apartment import ApartmentBase, ApartmentResponse
+
+from models.apartment import Apartment
+from models.building import Building
 from models.user import User
 from db_config import query_db, write_into_db
 # ** unpacking
 # SERVICES
 def create_user(model: UserBase) -> UserResponse:    
-    user = User(model.username, model.phone_number, model.email, model.apartment_id, model.owner, model.renter, model.valid)
+    user = User(
+        model.username,
+        model.phone_number,
+        model.email,
+        model.apartment_number,
+        model.building_id,
+        model.owner,
+        model.renter,
+        model.valid
+    )
     write_into_db(user)
 
     return UserResponse(
@@ -16,9 +30,11 @@ def create_user(model: UserBase) -> UserResponse:
         username=user.username,
         phone_number=user.phone_number,
         email=user.email,
-        apartment_id=user.apartment_id,
+        apartment_number=user.apartment_number,
+        building_id=user.building_id,
         owner=user.owner,
-        renter=user.renter
+        renter=user.renter,
+        valid=user.valid
         )
 
 def register_building(model: BuildingBase) -> dict[str, Any] | None:
@@ -49,6 +65,18 @@ def get_building_by_id(id: int) -> dict[str, Any] | None:
     return building._asdict() if building is not None else None
 
 def register_apartment(apartment: ApartmentBase) -> dict[str, Any] | None:
+    
+    existing_apartment = query_db(
+        select(Apartment)
+        .filter(and_(
+                Apartment.building_id == apartment.building_id,
+                Apartment.apartment_number == apartment.apartment_number
+                ))
+        ).first()
+    
+    if existing_apartment:
+        return None
+
     param = Apartment(
         apartment.building_id,
         apartment.pet,

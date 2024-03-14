@@ -23,3 +23,6 @@ class Building(Base):
         self.street = street
         self.apartments = apartments
         self.floors = floors
+        
+# apartment in the same building if it is created cannot be created
+# apartment in the different build can be created if not created
