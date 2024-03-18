@@ -5,58 +5,26 @@ from sqlalchemy.orm import joinedload
 from schemas.user import  UserBase, UserResponse
 from schemas.building import BuildingBase, BuildingResponse
 from schemas.apartment import ApartmentBase, ApartmentResponse
+from schemas.service import ServiceBase, ServiceResponse
 
 from models.apartment import Apartment
 from models.building import Building
 from models.user import User
+from models.service import Service
 from db_config import query_db, write_into_db
 # ** unpacking
 # SERVICES
-def create_user(model: UserBase) -> UserResponse:    
-    user = User(
-        model.username,
-        model.phone_number,
-        model.email,
-        model.apartment_number,
-        model.building_id,
-        model.owner,
-        model.renter,
-        model.valid
-    )
-    write_into_db(user)
+def create_user(user_base: UserBase) -> UserResponse:    
+    new_user = User(user_base)
+    write_into_db(new_user)
 
-    return UserResponse(
-        id=user.id,
-        username=user.username,
-        phone_number=user.phone_number,
-        email=user.email,
-        apartment_number=user.apartment_number,
-        building_id=user.building_id,
-        owner=user.owner,
-        renter=user.renter,
-        valid=user.valid
-        )
+    return UserResponse(**new_user.to_dict())
 
-def register_building(model: BuildingBase) -> dict[str, Any] | None:
-    building = Building(
-        model.name,
-        model.date_of_build,
-        model.city,
-        model.street,
-        model.apartments,
-        model.floors  
-    )
-    write_into_db(building)
+def register_building(building_base: BuildingBase) -> dict[str, Any] | None:
+    new_building = Building(building_base)
+    write_into_db(new_building)
 
-    return BuildingResponse(
-        id = building.id,
-        name=building.name,
-        date_of_build=building.date_of_build,
-        city=building.city,
-        street=building.street,
-        apartments=building.apartments,
-        floors=building.floors  
-    )
+    return BuildingResponse(**new_building.to_dict())
 
 def get_building_by_id(id: int) -> dict[str, Any] | None:
     query = select(Building).options(joinedload(Building.apartments_data)).filter(Building.id == id)
@@ -77,25 +45,10 @@ def register_apartment(apartment: ApartmentBase) -> dict[str, Any] | None:
     if existing_apartment:
         return None
 
-    param = Apartment(
-        apartment.building_id,
-        apartment.pet,
-        apartment.apartment_number,
-        apartment.floor,
-        apartment.parking_space,
-        apartment.family_name
-    )
-    write_into_db(param)
+    new_apartment = Apartment(apartment)
+    write_into_db(new_apartment)
     
-    return ApartmentResponse(
-        id=param.id,
-        building_id=param.building_id,
-        pet=param.pet,
-        apartment_number=param.apartment_number,
-        floor=param.floor,
-        parking_space=param.parking_space,
-        family_name=param.family_name
-    )
+    return ApartmentResponse(**new_apartment.to_dict())
     
 def get_apartment_by_id(id: int) -> dict[str, Any] | None:
     query = select(Apartment).options(joinedload(Apartment.users)).filter(Apartment.id == id)
@@ -112,3 +65,10 @@ def get_apartments(building_id: int) -> list[ApartmentResponse]:
     return [apartment._asdict() for apartment in apartments]
     
     #TODO get building should return complex data that building have apartments and apartments have users
+    
+def register_service(service: ServiceBase):
+    new_service = Service(service)
+   
+    write_into_db(new_service)
+    
+    return ServiceResponse(**new_service.to_dict())

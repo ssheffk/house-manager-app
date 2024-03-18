@@ -1,7 +1,8 @@
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from sqlalchemy import DateTime
 from datetime import datetime
-from db_config import Base
+from schemas.building import BuildingBase
+from db_config import Base, engine
 
 class Building(Base):
     __tablename__ = "buildings"
@@ -16,13 +17,26 @@ class Building(Base):
     
     apartments_data = relationship("Apartment", back_populates="building")
     
-    def __init__(self, name, date_of_build, city, street, apartments, floors):
-        self.name = name
-        self.date_of_build = date_of_build
-        self.city = city
-        self.street = street
-        self.apartments = apartments
-        self.floors = floors
+    def __init__(self, building_base: BuildingBase):
+        self.name = building_base.name
+        self.date_of_build = building_base.date_of_build
+        self.city = building_base.city
+        self.street = building_base.street
+        self.apartments = building_base.apartments
+        self.floors = building_base.floors
         
+    def to_dict(self):
+        """Convert Building instance to a dictionary."""
+        return {
+            "id": self.id,
+            "name": self.name,
+            "date_of_build": self.date_of_build,
+            "city": self.city,
+            "street": self.street,
+            "apartments": self.apartments,
+            "floors": self.floors
+        }
+
+Base.metadata.create_all(engine)  
 # apartment in the same building if it is created cannot be created
 # apartment in the different build can be created if not created

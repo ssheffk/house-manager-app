@@ -1,5 +1,6 @@
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
 from sqlalchemy import Column, ForeignKey, Integer
+from schemas.user import UserBase
 from db_config import Base, engine
 
 class User(Base):
@@ -22,15 +23,27 @@ class User(Base):
     
     # this should work as a constructor
     # apartment number could be a string -> apartment 12A
-    def __init__(self, username, phone_number, email, apartment_number, building_id , owner, renter, valid):
+    def __init__(self, user_base: UserBase):
         # self.id = id
-        self.username = username
-        self.phone_number = phone_number
-        self.email = email
-        self.apartment_number = apartment_number
-        self.building_id = building_id
-        self.owner = owner
-        self.renter = renter
-        self.valid = valid
+        self.username = user_base.username
+        self.phone_number = user_base.phone_number
+        self.email = user_base.email
+        self.apartment_number = user_base.apartment_number
+        self.building_id = user_base.building_id
+        self.owner = user_base.owner
+        self.renter = user_base.renter
+        self.valid = user_base.valid
+        
+    def to_dict(self):
+        """Convert User instance to a dictionary."""
+        return {
+            "id": self.id,
+            "username": self.username,
+            "phone_number": self.phone_number,
+            "email": self.email,
+            "apartment_number": self.apartment_number,
+            "building_id": self.building_id,
+            "owner": self.owner,
+        }
   
 Base.metadata.create_all(engine)

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import  Mapped, mapped_column, relationship
-from sqlalchemy import ForeignKey, PrimaryKeyConstraint
-from db_config import Base
+from sqlalchemy import ForeignKey
+from schemas.apartment import ApartmentBase
+from db_config import Base, engine
 
 class Apartment(Base):
     __tablename__ = "apartments"
@@ -23,10 +24,24 @@ class Apartment(Base):
     users = relationship("User", back_populates="apartment")
     
     
-    def __init__(self, building_id, pet, apartment_number, floor, parking_space, family_name):
-        self.building_id = building_id
-        self.pet = pet
-        self.apartment_number = apartment_number
-        self.floor = floor
-        self.parking_space = parking_space
-        self.family_name = family_name
+    def __init__(self, apartment_base: ApartmentBase):
+        self.building_id = apartment_base.building_id
+        self.pet = apartment_base.pet
+        self.apartment_number = apartment_base.apartment_number
+        self.floor = apartment_base.floor
+        self.parking_space = apartment_base.parking_space
+        self.family_name = apartment_base.family_name
+        
+    def to_dict(self):
+      """Convert Apartment instance to a dictionary."""
+      return {
+          "id": self.id,
+          "building_id": self.building_id,
+          "pet": self.pet,
+          "apartment_number": self.apartment_number,
+          "floor": self.floor,
+          "parking_space": self.parking_space,
+          "family_name": self.family_name
+      }
+      
+Base.metadata.create_all(engine)
