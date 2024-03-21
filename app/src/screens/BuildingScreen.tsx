@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import { NavigationPaths } from "../utils/navigationPaths";
 
 const buildingData: { floor: number; apartments: number[] }[] = [
   {
@@ -40,7 +41,12 @@ const BuildingScreen = ({ navigation }: any) => {
                   <Text
                     key={i}
                     style={styles.apartmentBubble}
-                    onPress={() => navigation.navigate("HouseHoldOverview")}
+                    onPress={() =>
+                      navigation.navigate(
+                        NavigationPaths.PROPERTY_INFORMATION,
+                        { props: apt }
+                      )
+                    }
                   >
                     <MaterialCommunityIcons
                       name="door-open"

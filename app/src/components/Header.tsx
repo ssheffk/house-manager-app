@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Header as HeaderRNE } from "@rneui/themed";
 import { Avatar } from "@rneui/base";
-import ProfileModal from "./profile-modal/ProfileModal";
+import ProfileModal from "./modals/ProfileModal";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 type HeaderComponentProps = {

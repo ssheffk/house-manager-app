@@ -1,16 +1,16 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import HouseHoldOverview from "../components/overviews/HouseHoldOverview";
-import ServicesOverview from "../components/overviews/ServicesOverview";
 import TabsNavigation from "./TabsNavigation";
+import ServicesOverview from "../views/ServiceOverview";
+import PropertyOverview from "../views/PropertyOverview";
 const Stack = createNativeStackNavigator();
 
 //TODO: when screens increase we can separate them into stacks
 
 const screens = {
   ServicesOverview: ServicesOverview,
-  HouseHoldOverview: HouseHoldOverview,
+  PropertyOverview: PropertyOverview,
 };
 const RootStack = () => {
   return (
